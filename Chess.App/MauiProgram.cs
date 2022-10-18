@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.WebView.Maui;
 using Chess.App.Data;
+using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Chess.App;
 
@@ -20,8 +21,9 @@ public static class MauiProgram
 		builder.Services.AddBlazorWebViewDeveloperTools();
 #endif
 		
-		builder.Services.AddSingleton<WeatherForecastService>();
+        builder.Services.AddSingleton<WeatherForecastService>();
+        builder.Services.AddSingleton<IChatService, ChatService>();
 
-		return builder.Build();
+        return builder.Build();
 	}
 }

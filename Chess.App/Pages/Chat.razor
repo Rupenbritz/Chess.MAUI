@@ -1,45 +1,40 @@
-﻿@using Microsoft.AspNetCore.SignalR.Client;
-@page "/chat"
+﻿@page "/chat"
+
+@using Chess.App.Data
+@inject IChatService ChatService
 
 <ul id="chatMessages">
     @foreach (var message in Messages) {
         <li>@message</li>
     }
 </ul>
-<input type="text" id="myChatMessage" @bind="chatMessage" />
+<input type="text" id="myChatMessage" @bind="message" />
 <input type="button" id="sendButton" value="Send" @onclick="SendMessage" />
 
 @code {
-    private HubConnection _connection;
     List<string> Messages = new List<string>();
-    string chatMessage = string.Empty;
+    string message = string.Empty;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        _connection = new HubConnectionBuilder().WithUrl("http://192.168.134.49:5066/chat").Build();
-
-        _connection.On<string>("MessageReceived", (message) => {
-            if (!string.IsNullOrEmpty(message))
-            {
-                Messages.Add(message);
-            }
-        });
-
-        //This needs to run backend on the dispatcher
-        await Task.Run(async () => 
-        {
-            await _connection.StartAsync();
-        });
-        //Task.Run(() =>
-        //{
-        //    Dispatcher.Dispatch(async () => await _connection.StartAsync());
-        //});
-
+        ChatService.ReceiveMessage += OnReceiveMessage;
         base.OnInitialized();
     }
 
-    public async Task SendMessage() {
-        await _connection.InvokeCoreAsync("SendMessage", args: new[] { chatMessage });
-        chatMessage = string.Empty;
+    public void SendMessage()
+    {
+        ChatService.SendMessage(message);
+        message = string.Empty;
+    }
+
+    private async void OnReceiveMessage(object sender, string msg) {
+        await InvokeAsync(() =>
+        {
+            if (!string.IsNullOrEmpty(msg))
+            {
+                Messages.Add(msg);
+                StateHasChanged();
+            }
+        });
     }
 }
