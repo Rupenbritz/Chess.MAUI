@@ -28,22 +28,14 @@
 			switch (chessPiece)
 			{
 				case "Knight":
-					if (CellExists(currentCell.Row + 2, currentCell.Col + 1))
-						Grid[currentCell.Row + 2, currentCell.Col + 1].LegalNextMove = true;
-					if (CellExists(currentCell.Row + 2, currentCell.Col - 1))
-						Grid[currentCell.Row + 2, currentCell.Col - 1].LegalNextMove = true;
-                    if (CellExists(currentCell.Row - 2, currentCell.Col + 1))
-                        Grid[currentCell.Row - 2, currentCell.Col + 1].LegalNextMove = true;
-                    if (CellExists(currentCell.Row - 2, currentCell.Col - 1))
-                        Grid[currentCell.Row - 2, currentCell.Col - 1].LegalNextMove = true;
-                    if (CellExists(currentCell.Row + 1, currentCell.Col + 2))
-                        Grid[currentCell.Row + 1, currentCell.Col + 2].LegalNextMove = true;
-                    if (CellExists(currentCell.Row + 1, currentCell.Col - 2))
-                        Grid[currentCell.Row + 1, currentCell.Col - 2].LegalNextMove = true;
-                    if (CellExists(currentCell.Row - 1, currentCell.Col + 2))
-                        Grid[currentCell.Row - 1, currentCell.Col + 2].LegalNextMove = true;
-                    if (CellExists(currentCell.Row - 1, currentCell.Col - 2))
-                        Grid[currentCell.Row - 1, currentCell.Col - 2].LegalNextMove = true;
+					CheckCell(currentCell.Row + 2, currentCell.Col + 1);
+					CheckCell(currentCell.Row + 2, currentCell.Col - 1);
+					CheckCell(currentCell.Row - 2, currentCell.Col + 1);
+					CheckCell(currentCell.Row - 2, currentCell.Col - 1);
+					CheckCell(currentCell.Row + 1, currentCell.Col + 2);
+					CheckCell(currentCell.Row + 1, currentCell.Col - 2);
+					CheckCell(currentCell.Row - 1, currentCell.Col + 2);
+					CheckCell(currentCell.Row - 1, currentCell.Col - 2);
                     break;
 				case "King":
 					break;
@@ -59,11 +51,14 @@
 			Grid[currentCell.Row, currentCell.Col].Occupied = true;
         }
 
-		private bool CellExists(int y, int x)
+		private bool CheckCell(int y, int x)
 		{
 			try
 			{
-				Grid[y, x].LegalNextMove = true;
+				if (y >= 0 && y < 8 && x >= 0 && x < 8 && !Grid[y, x].Occupied)
+				{
+					Grid[y, x].LegalNextMove = true;
+				}
 				return true;
 			}
 			catch
