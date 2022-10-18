@@ -69,7 +69,20 @@
         }
 
         public void MarkNextLegalMoves(Cell currentCell)
-		{
+        {
+			for (int y = 0; y < Size; y++)
+			{
+				for (int x = 0; x < Size; x++)
+				{
+					var cell = Grid[y, x];
+
+                    if (!cell.Occupied)
+					{
+						cell.LegalNextMove = false;
+					}
+				}
+			}
+
 			if (currentCell.Piece != null)
 			{
 				switch (currentCell.Piece.Name)

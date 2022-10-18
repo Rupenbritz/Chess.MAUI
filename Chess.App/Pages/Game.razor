@@ -13,7 +13,7 @@
             @if (c.Occupied) { 
                 <span class="grid-item-text">@c.Piece.Name</span>            
             } else {
-                <span class="grid-item-text">@(c.LegalNextMove ? "+" : "")</span>
+                <span class="grid-item-text text-white">@(c.LegalNextMove ? "+" : "")</span>
             }
         </div>
     }
@@ -22,12 +22,16 @@
 
 @code {
     static Board board = new Board(8);
-    private Cell currentCell;
+    private bool IsWhiteTurn = true;
 
     public async void ClickGrid(Cell c) {
-        board.Init();
-        board.MarkNextLegalMoves(c);
-        currentCell = c;
-        StateHasChanged();
+        if (c.Piece != null)
+        {
+            if ((IsWhiteTurn && c.Piece.IsWhite) || !IsWhiteTurn && !c.Piece.IsWhite)
+            {
+                board.MarkNextLegalMoves(c);
+                StateHasChanged();
+            }
+        }
     }
 }
