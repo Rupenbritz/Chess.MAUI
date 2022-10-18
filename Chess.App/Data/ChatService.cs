@@ -13,7 +13,7 @@ public class ChatService : IChatService
 
     public ChatService()
     {
-        _connection = new HubConnectionBuilder().WithUrl("http://192.168.134.49:5066/chat").Build(); ;
+        _connection = new HubConnectionBuilder().WithUrl("http://192.168.134.49:5066/chat").Build();
 
         _connection.On<string>("MessageReceived", (message) =>
         {

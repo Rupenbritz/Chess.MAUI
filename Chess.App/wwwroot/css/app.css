@@ -82,3 +82,27 @@ a, .btn-link {
 		padding-left: env(safe-area-inset-left);
 	}
 }
+
+#Game-Grid {
+    display: grid;
+}
+
+.grid-item {
+    background-color: #b5915f;
+    font-size: 80%;
+    text-align: center;
+    width: 64px;
+    height: 64px;
+}
+
+.grid-odd {
+    background-color: #b5915f;
+}
+
+.grid-even {
+    background-color: #441a03;
+}
+
+.columns-8 {
+    grid-template-columns: repeat(8, 64px);
+}

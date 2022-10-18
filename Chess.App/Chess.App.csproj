@@ -53,4 +53,8 @@
       <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.10" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Chess.Models\Chess.Models.csproj" />
+    </ItemGroup>
+
 </Project>

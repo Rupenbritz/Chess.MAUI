@@ -1,0 +1,18 @@
+﻿@page "/game"
+@using Chess.Models;
+
+@*Generate Grid*@
+<div id="Game-Grid" class="columns-8">
+@for (int y = 0; y < settings.Y; y++)
+{
+    @for (int x = 0; x < settings.X; x++)
+    {
+        var evenOddClass = (x % 2 == 0 && y % 2 > 0) || (y % 2 == 0 && x % 2 > 0) ? "grid-even" : "grid-odd";
+        <div class="grid-item @evenOddClass"></div>
+    }
+}
+</div>
+
+@code {
+    GameSettings settings = GameSettings.Chess();
+}
