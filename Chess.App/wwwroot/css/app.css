@@ -94,7 +94,6 @@ a, .btn-link {
     width: 64px;
     height: 64px;
     line-height: 64px;
-    color: white;
 }
 
 .grid-item-text {
@@ -113,4 +112,8 @@ a, .btn-link {
 
 .columns-8 {
     grid-template-columns: repeat(8, 64px);
+}
+
+.text-white {
+    color: white;
 }

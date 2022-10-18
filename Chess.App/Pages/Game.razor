@@ -8,8 +8,13 @@
     {
         Cell c = board.Grid[y, x];
         var evenOddClass = (x % 2 == 0 && y % 2 > 0) || (y % 2 == 0 && x % 2 > 0) ? "grid-even" : "grid-odd";
-        <div class="grid-item @evenOddClass" @onclick="() => ClickGrid(c)">
-            <span class="grid-item-text">@(c.Occupied ? "X" : (c.LegalNextMove ? "+" : "."))</span>
+        var isWhiteClass = c.Piece != null && c.Piece.IsWhite ? "text-white" : "";
+        <div class="grid-item @evenOddClass @isWhiteClass" @onclick="() => ClickGrid(c)">
+            @if (c.Occupied) { 
+                <span class="grid-item-text">@c.Piece.Name</span>            
+            } else {
+                <span class="grid-item-text">@(c.LegalNextMove ? "+" : "")</span>
+            }
         </div>
     }
 }
@@ -21,7 +26,7 @@
 
     public async void ClickGrid(Cell c) {
         board.Init();
-        board.MarkNextLegalMoves(c, "Knight");
+        board.MarkNextLegalMoves(c);
         currentCell = c;
         StateHasChanged();
     }

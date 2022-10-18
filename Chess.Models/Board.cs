@@ -18,37 +18,85 @@
             {
                 for (int x = 0; x < Size; x++)
                 {
-                    Grid[y, x] = new Cell(y, x);
+					switch(y)
+					{
+						case 0:
+							//Black pieces
+							Grid[y, x] = new Cell(y, x, new Piece(GetPieceNameByLocation(x)));
+                            break;
+						case 1:
+                            //Black pieces
+                            var bp = new Piece(GetPieceNameByLocation(x));
+                            Grid[y, x] = new Cell(y, x, new Piece(GetPieceNameByLocation(-1)));
+                            break;
+						case 6:
+                            //White pieces
+                            Grid[y, x] = new Cell(y, x, new Piece(GetPieceNameByLocation(-1), true));
+                            break;
+						case 7:
+                            //White pieces
+                            Grid[y, x] = new Cell(y, x, new Piece(GetPieceNameByLocation(x), true));
+                            break;
+						default:
+                            //Empty
+                            Grid[y, x] = new Cell(y, x);
+                            break;
+					}
                 }
             }
         }
 
-        public void MarkNextLegalMoves(Cell currentCell, string chessPiece)
+		private string GetPieceNameByLocation(int x)
 		{
-			switch (chessPiece)
+            switch (x)
+            {
+                case 0:
+				case 7:
+					return "Rook";
+                case 1:
+				case 6:
+					return "Knight";
+                case 2:
+				case 5:
+					return "Bishop";
+                case 3:
+					return "Queen";
+				case 4:
+					return "King";
+                default:
+					return "Pawn";
+            }
+        }
+
+        public void MarkNextLegalMoves(Cell currentCell)
+		{
+			if (currentCell.Piece != null)
 			{
-				case "Knight":
-					CheckCell(currentCell.Row + 2, currentCell.Col + 1);
-					CheckCell(currentCell.Row + 2, currentCell.Col - 1);
-					CheckCell(currentCell.Row - 2, currentCell.Col + 1);
-					CheckCell(currentCell.Row - 2, currentCell.Col - 1);
-					CheckCell(currentCell.Row + 1, currentCell.Col + 2);
-					CheckCell(currentCell.Row + 1, currentCell.Col - 2);
-					CheckCell(currentCell.Row - 1, currentCell.Col + 2);
-					CheckCell(currentCell.Row - 1, currentCell.Col - 2);
-                    break;
-				case "King":
-					break;
-				case "Rook":
-					break;
-				case "Bishop":
-					break;
-				case "Queen":
-					break;
-				default:
-					break;
+				switch (currentCell.Piece.Name)
+				{
+					case "Knight":
+						CheckCell(currentCell.Row + 2, currentCell.Col + 1);
+						CheckCell(currentCell.Row + 2, currentCell.Col - 1);
+						CheckCell(currentCell.Row - 2, currentCell.Col + 1);
+						CheckCell(currentCell.Row - 2, currentCell.Col - 1);
+						CheckCell(currentCell.Row + 1, currentCell.Col + 2);
+						CheckCell(currentCell.Row + 1, currentCell.Col - 2);
+						CheckCell(currentCell.Row - 1, currentCell.Col + 2);
+						CheckCell(currentCell.Row - 1, currentCell.Col - 2);
+						break;
+					case "King":
+						break;
+					case "Rook":
+						break;
+					case "Bishop":
+						break;
+					case "Queen":
+						break;
+					default:
+						break;
+				}
+				Grid[currentCell.Row, currentCell.Col].Occupied = true;
 			}
-			Grid[currentCell.Row, currentCell.Col].Occupied = true;
         }
 
 		private bool CheckCell(int y, int x)
@@ -72,12 +120,31 @@
 	{
 		public int Row { get; set; }
 		public int Col { get; set; }
+		public Piece Piece { get; set; }
 		public bool Occupied { get; set; }
 		public bool LegalNextMove { get; set; }
 
-		public Cell (int x, int y)
+		public Cell (int x, int y, Piece p = null)
 		{
-			Row = x; Col = y;
+			Row = x; 
+			Col = y;
+			if (p != null)
+			{
+				this.Piece = p;
+				Occupied = true;
+			}
+		}
+	}
+
+	public class Piece
+	{
+		public string Name { get; set; }
+		public bool IsWhite { get; set; }
+
+		public Piece(string name, bool isWhite = false)
+		{
+			Name = name;
+			IsWhite = isWhite;
 		}
 	}
 }
