@@ -93,6 +93,14 @@ a, .btn-link {
     text-align: center;
     width: 64px;
     height: 64px;
+    line-height: 64px;
+    color: white;
+}
+
+.grid-item-text {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: normal;
 }
 
 .grid-odd {

@@ -1,18 +1,28 @@
 ﻿@page "/game"
 @using Chess.Models;
 
-@*Generate Grid*@
 <div id="Game-Grid" class="columns-8">
-@for (int y = 0; y < settings.Y; y++)
+@for (int y = 0; y < board.Size; y++)
 {
-    @for (int x = 0; x < settings.X; x++)
+    @for (int x = 0; x < board.Size; x++)
     {
+        Cell c = board.Grid[y, x];
         var evenOddClass = (x % 2 == 0 && y % 2 > 0) || (y % 2 == 0 && x % 2 > 0) ? "grid-even" : "grid-odd";
-        <div class="grid-item @evenOddClass"></div>
+        <div class="grid-item @evenOddClass" @onclick="() => ClickGrid(c)">
+            <span class="grid-item-text">@(c.Occupied ? "X" : (c.LegalNextMove ? "+" : "."))</span>
+        </div>
     }
 }
 </div>
 
 @code {
-    GameSettings settings = GameSettings.Chess();
+    static Board board = new Board(8);
+    private Cell currentCell;
+
+    public async void ClickGrid(Cell c) {
+        board.Init();
+        board.MarkNextLegalMoves(c, "Knight");
+        currentCell = c;
+        StateHasChanged();
+    }
 }
